@@ -65,7 +65,7 @@ class App extends React.Component {
 
 	componentWillMount()
 	{
-		UserStore.listen(this.fetchPlugins.bind(this));
+		this.unsubscribe = UserStore.listen(this.fetchPlugins.bind(this));
 
 		const Dicoogle = dicoogleClient(Endpoints.base);
 		if (localStorage.token) {
@@ -78,6 +78,9 @@ class App extends React.Component {
 		}
 		Webcore.init(Endpoints.base);
 	}
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
 
 	componentDidMount(){
     UserStore.loadLocalStore();
